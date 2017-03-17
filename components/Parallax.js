@@ -4,9 +4,9 @@ export default class extends React.Component {
     windowInnerHeight = 0;
     windowPageYOffset = 0;
     busy = false;
-    scroller = () => {
+    scroller = ({ force = false }) => {
         Object.values(this.refs).forEach(
-            layer => layer.move && layer.move(this.windowInnerHeight, this.windowPageYOffset)
+            layer => layer.move && layer.move(this.windowInnerHeight, this.windowPageYOffset, force)
         );
         this.busy = false;
     };
@@ -18,18 +18,21 @@ export default class extends React.Component {
         }
     };
 
-    onResize = () => this.windowInnerHeight = window.innerHeight;
+    onResize = () => {
+        this.windowPageYOffset = window.pageYOffset;
+        this.windowInnerHeight = window.innerHeight;
+        Object.values(this.refs).forEach(layer => layer.height && layer.height(this.windowInnerHeight));
+        this.scroller({ force: true });
+    }
 
     componentDidMount() {
         window.addEventListener('scroll', this.onScroll, { passive: true });
         window.addEventListener('resize', this.onResize, false);
         this.onResize();
-        this.onScroll();
     }
 
     componentDidUpdate() {
         this.onResize();
-        this.onScroll();
     }
 
     componentWillUnmount() {
@@ -49,21 +52,33 @@ export default class extends React.Component {
                     width: '100%',
                     transform: 'translate3d(0, 0, 0)',
                     overflow: 'hidden',
-                    height: this.props.height
+                    height: this.props.height,
+                    ...this.props.style
                 }}
                 className={this.props.className}>
-
                 {this.layers}
-
             </div>
         );
     }
 
     static Layer = class extends React.Component {
-        move(innerHeight, YOffset) {
-            let toValue = -(YOffset * this.props.speed) + innerHeight * this.props.offset;
-            if (!(this.props.style && this.props.style.height)) this.refs.layer.style.height = `${innerHeight}px`;
-            this.refs.layer.style.transform = `translate3d(0,${toValue}px,0)`;
+        invisible = false;
+        static propTypes = { factor: React.PropTypes.number, offset: React.PropTypes.number };
+        static defaultProps = { factor: 1, offset: 0 };
+
+        move(innerHeight, YOffset, force = false) {
+            let offset = -(YOffset * this.props.speed) + innerHeight * this.props.offset;
+            let height = innerHeight * this.props.factor;
+            let invisible = (offset > (YOffset + innerHeight)) || ((offset + height) < YOffset);
+            console.log(invisible, force)
+            if (!invisible || force) {
+                this.refs.layer.style.transform = `translate3d(0,${offset}px,0)`;
+            }
+        }
+
+        height(innerHeight) {
+            let height = innerHeight * this.props.factor;
+            this.refs.layer.style.height = height + 'px';
         }
 
         render() {
@@ -72,7 +87,6 @@ export default class extends React.Component {
                     ref="layer"
                     style={{
                         position: 'absolute',
-                        backgroundPosition: 'bottom center',
                         backgroundSize: 'auto',
                         backgroundRepeat: 'no-repeat',
                         willChange: 'transform',

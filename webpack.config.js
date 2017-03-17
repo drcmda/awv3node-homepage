@@ -1,4 +1,4 @@
-const path = require ('path');
+const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -24,7 +24,10 @@ module.exports = env => {
         : [];
 
     const PROD_BABEL_PLUGINS = env.prod
-        ? [['transform-runtime', { helpers: false, polyfill: false, regenerator: true }]]
+        ? [
+              ['transform-object-rest-spread', { useBuiltIns: true }],
+              ['transform-runtime', { helpers: false, polyfill: false, regenerator: true }]
+          ]
         : [];
 
     const PROD_WEBPACK_ALIASES = env.prod ? { react: 'react-lite', 'react-dom': 'react-lite' } : {};
@@ -99,7 +102,7 @@ module.exports = env => {
                 minChunks: module => /(node_modules)/.test(module.resource)
             }),
             ...DEV_WEBPACK_PLUGINS,
-            ...PROD_WEBPACK_PLUGINS,
+            ...PROD_WEBPACK_PLUGINS
             //new BundleAnalyzerPlugin()
         ],
         devServer: { hot: env.dev, contentBase: __dirname, stats: 'errors-only' },

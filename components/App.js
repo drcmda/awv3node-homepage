@@ -4,78 +4,79 @@ import Parallax from './Parallax';
 export default class extends React.Component {
     render() {
         return (
-            <Parallax height="400%">
-                <Parallax.Layer
-                    offset={0} speed={0.01}
-                    style={{
-                        height: '500%',
-                        backgroundPosition: 'initial',
-                        backgroundRepeat: 'repeat',
-                        backgroundImage: 'url(assets/stars.svg)'
-                    }}
-                />
+            <Parallax height="400%" style={{
+                backgroundSize: 'cover',
+                backgroundImage: 'url(build/assets/stars.svg)'
+            }}>
 
                 <Parallax.Layer
                     offset={0} speed={0.6}
-                    style={{ backgroundImage: `url(assets/logo.png)`, backgroundPosition: 'center' }}
+                    style={{ backgroundImage: `url(build/assets/logo.png)`, backgroundPosition: 'center' }}
                 />
 
                 <Parallax.Layer offset={1} speed={-0.2}>
-                    <img src="assets/satellite4.svg" style={{ width: '30%', marginLeft: '60%' }} />
+                    <img src="build/assets/satellite4.svg" style={{ width: '30%', marginLeft: '60%' }} />
                 </Parallax.Layer>
 
                 <Parallax.Layer offset={1.8} speed={0.8} style={{ opacity: 0.2 }}>
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 600, marginLeft: '10%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '40%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 100, marginLeft: '15%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 600, marginLeft: '10%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '40%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 100, marginLeft: '15%' }} />
                 </Parallax.Layer>
 
                 <Parallax.Layer offset={2.3} speed={0.5} style={{ opacity: 0.4 }}>
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '70%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '40%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '30%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '70%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '40%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '30%' }} />
                 </Parallax.Layer>
 
                 <Parallax.Layer offset={3.3} speed={0.6} style={{ opacity: 0.6 }}>
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 100, marginLeft: '10%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '40%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '50%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 100, marginLeft: '10%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '40%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '50%' }} />
                 </Parallax.Layer>
 
                 <Parallax.Layer offset={2.5} speed={-0.1} style={{ opacity: 0.8 }}>
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '60%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '20%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '80%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '60%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '20%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '80%' }} />
                 </Parallax.Layer>
 
                 <Parallax.Layer offset={4.8} speed={0.4}>
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '10%' }} />
-                    <img src="assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '70%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '10%' }} />
+                    <img src="build/assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '70%' }} />
                 </Parallax.Layer>
 
-                <Parallax.Layer
-                    offset={2.3} speed={-0.4}
-                    style={{
-                        backgroundSize: '100%',
-                        backgroundPosition: 'center',
-                        backgroundImage: `url(assets/earth.svg)`
-                    }} />
+
 
                 <Parallax.Layer
-                    offset={2.1} speed={-0.3}
-                    style={{
-                        backgroundSize: '80%',
-                        backgroundPosition: 'center',
-                        backgroundImage: `url(assets/clients.svg)`
-                    }} />
+                    offset={2.5} factor={2} speed={-0.2}
+                    style={{ opacity: 0.2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <img src="build/assets/ether.svg" style={{ width: '100%' }} />
+                    </Parallax.Layer>
 
-                <Parallax.Layer
-                    offset={1.5} speed={-0.5}
-                    style={{
-                        backgroundSize: '45%',
-                        backgroundPosition: 'center',
-                        backgroundImage: `url(assets/clients-main.svg)`
-                    }} />
+                    <Parallax.Layer
+                        offset={2.3} speed={-0.4}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <img src="build/assets/earth.svg" style={{ width: '100%' }} />
+                        </Parallax.Layer>
+
+                        <Parallax.Layer
+                            offset={2.1} speed={-0.3}
+                            style={{
+                                backgroundSize: '80%',
+                                backgroundPosition: 'center',
+                                backgroundImage: `url(build/assets/clients.svg)`
+                            }} />
+
+                        <Parallax.Layer
+                            offset={1.5} speed={-0.5}
+                            style={{
+                                backgroundSize: '45%',
+                                backgroundPosition: 'center',
+                                backgroundImage: `url(build/assets/clients-main.svg)`
+                            }} />
+
 
             </Parallax>
         );
