@@ -1,31 +1,27 @@
 import React from 'react';
 
 export default class extends React.Component {
+    layers = [];
     windowInnerHeight = 0;
     windowPageYOffset = 0;
-    busy = false;
-    scroller = ({ force = false }) => {
-        Object.values(this.refs).forEach(
-            layer => layer.move && layer.move(this.windowInnerHeight, this.windowPageYOffset, force)
-        );
-        this.busy = false;
-    };
+
+    scroller = ({ force = false }) =>
+        this.layers.forEach(layer => layer.move(this.windowInnerHeight, this.windowPageYOffset, force));
+
     onScroll = event => {
-        if (!this.busy) {
-            this.busy = true;
-            requestAnimationFrame(this.scroller);
-            this.windowPageYOffset = window.pageYOffset;
-        }
+        requestAnimationFrame(this.scroller);
+        this.windowPageYOffset = window.pageYOffset;
     };
 
     onResize = () => {
         this.windowPageYOffset = window.pageYOffset;
         this.windowInnerHeight = window.innerHeight;
-        Object.values(this.refs).forEach(layer => layer.height && layer.height(this.windowInnerHeight));
+        this.layers.forEach(layer => layer.height(this.windowInnerHeight));
         this.scroller({ force: true });
     }
 
     componentDidMount() {
+        this.layers = Object.keys(this.refs).filter(key => this.refs[key].move).map(key => this.refs[key]);
         window.addEventListener('scroll', this.onScroll, { passive: true });
         window.addEventListener('resize', this.onResize, false);
         this.onResize();
@@ -70,15 +66,14 @@ export default class extends React.Component {
             let offset = -(YOffset * this.props.speed) + innerHeight * this.props.offset;
             let height = innerHeight * this.props.factor;
             let invisible = (offset > (YOffset + innerHeight)) || ((offset + height) < YOffset);
-            console.log(invisible, force)
             if (!invisible || force) {
-                this.refs.layer.style.transform = `translate3d(0,${offset}px,0)`;
+                this.refs.layer.style.transform = `translate3d(0,${offset.toFixed(2)}px,0)`;
             }
         }
 
         height(innerHeight) {
             let height = innerHeight * this.props.factor;
-            this.refs.layer.style.height = height + 'px';
+            this.refs.layer.style.height = height.toFixed(2) + 'px';
         }
 
         render() {

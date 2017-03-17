@@ -1,7 +1,12 @@
 import React from 'react';
 import Parallax from './Parallax';
+import Animated from 'animated/lib/targets/react-dom';
 
 export default class extends React.Component {
+    animation = new Animated.Value(1)
+    hover = () => Animated.spring(this.animation, { toValue: 1.2 }).start()
+    unhover = () => Animated.spring(this.animation, { toValue: 1 }).start()
+
     render() {
         return (
             <Parallax height="400%" style={{
@@ -24,19 +29,19 @@ export default class extends React.Component {
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 100, marginLeft: '15%' }} />
                 </Parallax.Layer>
 
-                <Parallax.Layer offset={2.3} speed={0.5} style={{ opacity: 0.4 }}>
+                <Parallax.Layer offset={2.3} speed={0.5} style={{ opacity: 0.2 }}>
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '70%' }} />
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '40%' }} />
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '30%' }} />
                 </Parallax.Layer>
 
-                <Parallax.Layer offset={3.3} speed={0.6} style={{ opacity: 0.6 }}>
+                <Parallax.Layer offset={3.3} speed={0.6} style={{ opacity: 0.4 }}>
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 100, marginLeft: '10%' }} />
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '40%' }} />
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '50%' }} />
                 </Parallax.Layer>
 
-                <Parallax.Layer offset={2.5} speed={-0.1} style={{ opacity: 0.8 }}>
+                <Parallax.Layer offset={2.5} speed={-0.1} style={{ opacity: 0.6 }}>
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 300, marginLeft: '60%' }} />
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 400, marginLeft: '20%' }} />
                     <img src="build/assets/cloud.svg" style={{ display: 'block', width: 200, marginLeft: '80%' }} />
@@ -58,25 +63,26 @@ export default class extends React.Component {
                     <Parallax.Layer
                         offset={2.3} speed={-0.4}
                         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <img src="build/assets/earth.svg" style={{ width: '100%' }} />
-                        </Parallax.Layer>
+                        <img src="build/assets/earth.svg" style={{ width: '100%' }} />
+                    </Parallax.Layer>
 
-                        <Parallax.Layer
-                            offset={2.1} speed={-0.3}
-                            style={{
-                                backgroundSize: '80%',
-                                backgroundPosition: 'center',
-                                backgroundImage: `url(build/assets/clients.svg)`
-                            }} />
+                    <Parallax.Layer
+                        offset={2.1} speed={-0.3}
+                        style={{
+                            backgroundSize: '80%',
+                            backgroundPosition: 'center',
+                            backgroundImage: `url(build/assets/clients.svg)`
+                        }} />
 
-                        <Parallax.Layer
-                            offset={1.5} speed={-0.5}
-                            style={{
-                                backgroundSize: '45%',
-                                backgroundPosition: 'center',
-                                backgroundImage: `url(build/assets/clients-main.svg)`
-                            }} />
-
+                    <Parallax.Layer
+                        offset={1.5} speed={-0.5}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Animated.img
+                            src="build/assets/clients-main.svg"
+                            style={{ cursor: 'pointer', width: '45%', transform: [ { scale: this.animation } ] }}
+                            onMouseOver={this.hover}
+                            onMouseOut={this.unhover}/>
+                    </Parallax.Layer>
 
             </Parallax>
         );
