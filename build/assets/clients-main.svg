@@ -1,17 +1,6 @@
 
 <svg width="358px" height="223px" viewBox="331 474 358 223" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <desc>Created with Sketch.</desc>
     <defs>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
-            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="7.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
-            <feMerge>
-                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-            </feMerge>
-        </filter>
         <ellipse id="path-2" cx="5.67965368" cy="5.67647059" rx="5.67965368" ry="5.67647059"></ellipse>
         <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-3">
             <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
@@ -37,7 +26,7 @@
             <feColorMatrix values="0 0 0 0 0.0901960784   0 0 0 0 0.541176471   0 0 0 0 0.164705882  0 0 0 1 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
         </filter>
     </defs>
-    <g id="client-copy" filter="url(#filter-1)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(346.000000, 487.000000)">
+    <g id="client-copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(346.000000, 487.000000)">
         <rect id="Rectangle-5" fill="#D8D8D8" x="0" y="0" width="328" height="193" rx="8"></rect>
         <path d="M0,25.5441176 L328,25.5441176 L328,185.007812 C328,189.421775 324.428194,193 319.993845,193 L8.00615545,193 C3.58447789,193 0,189.424975 0,185.007812 L0,25.5441176 Z" id="Rectangle-6" fill="#FFFFFF"></path>
         <g id="dots" transform="translate(8.519481, 8.514706)">

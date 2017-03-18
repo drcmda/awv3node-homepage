@@ -1,6 +1,6 @@
 import React from 'react';
-import Parallax from './Parallax';
 import Animated from 'animated/lib/targets/react-dom';
+import Parallax from './Parallax';
 
 export default class extends React.Component {
     animation = new Animated.Value(1)
@@ -75,7 +75,7 @@ export default class extends React.Component {
                         }} />
 
                     <Parallax.Layer
-                        offset={1.5} speed={-0.5}
+                        offset={2.7} speed={-0.1}
                         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Animated.img
                             src="build/assets/clients-main.svg"

@@ -1,16 +1,6 @@
 
 <svg width="1266px" height="1268px" viewBox="-246 -257 1266 1268" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <desc>Created with Sketch.</desc>
     <defs>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
-            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 1 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
-            <feMerge>
-                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-            </feMerge>
-        </filter>
         <polygon id="path-2" points="-5.68434189e-14 779 779 779 779 -2.27373675e-13 -5.68434189e-14 -2.27373675e-13"></polygon>
         <radialGradient cx="44.5956246%" cy="27.3441416%" fx="44.5956246%" fy="27.3441416%" r="33.5425778%" id="radialGradient-4">
             <stop stop-color="#CEE8FC" offset="0%"></stop>
@@ -23,7 +13,7 @@
             <feColorMatrix values="0 0 0 0 0.0949338699   0 0 0 0 0.16499256   0 0 0 0 0.135031999  0 0 0 1 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
         </filter>
     </defs>
-    <g id="1f30f" filter="url(#filter-1)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(389.764516, 381.358985) rotate(-238.000000) translate(-389.764516, -381.358985) translate(-4.235484, -8.641015)">
+    <g id="1f30f" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(389.764516, 381.358985) rotate(-238.000000) translate(-389.764516, -381.358985) translate(-4.235484, -8.641015)">
         <g id="svg2" transform="translate(-0.000000, 0.000000)">
             <g id="g10" transform="translate(394.000000, 390.000000) scale(-1, 1) rotate(-180.000000) translate(-394.000000, -390.000000) translate(-0.000000, 0.000000)">
                 <g id="g12" transform="translate(9.000000, -0.000000)">

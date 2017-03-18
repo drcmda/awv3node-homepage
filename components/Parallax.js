@@ -1,4 +1,6 @@
 import React from 'react';
+import Animated from 'animated/lib/targets/react-dom';
+import throttle from 'lodash/throttle';
 
 export default class extends React.Component {
     layers = [];
@@ -22,7 +24,7 @@ export default class extends React.Component {
 
     componentDidMount() {
         this.layers = Object.keys(this.refs).filter(key => this.refs[key].move).map(key => this.refs[key]);
-        window.addEventListener('scroll', this.onScroll, { passive: true });
+        window.addEventListener('scroll', throttle(this.onScroll, 100), { passive: true });
         window.addEventListener('resize', this.onResize, false);
         this.onResize();
     }
@@ -58,27 +60,28 @@ export default class extends React.Component {
     }
 
     static Layer = class extends React.Component {
-        invisible = false;
+        constructor(props) {
+            super(props);
+            this.animation = new Animated.Value(window.innerHeight * props.factor);
+            this.invisible = false;
+        }
+
         static propTypes = { factor: React.PropTypes.number, offset: React.PropTypes.number };
         static defaultProps = { factor: 1, offset: 0 };
 
         move(innerHeight, YOffset, force = false) {
             let offset = -(YOffset * this.props.speed) + innerHeight * this.props.offset;
-            let height = innerHeight * this.props.factor;
-            let invisible = (offset > (YOffset + innerHeight)) || ((offset + height) < YOffset);
-            if (!invisible || force) {
-                this.refs.layer.style.transform = `translate3d(0,${offset.toFixed(2)}px,0)`;
-            }
+            Animated.spring(this.animation, { toValue: parseFloat(offset) }).start();
         }
 
         height(innerHeight) {
             let height = innerHeight * this.props.factor;
-            this.refs.layer.style.height = height.toFixed(2) + 'px';
+            this.refs.layer.refs.node.style.height = height.toFixed(2) + 'px';
         }
 
         render() {
             return (
-                <div
+                <Animated.div
                     ref="layer"
                     style={{
                         position: 'absolute',
@@ -87,11 +90,14 @@ export default class extends React.Component {
                         willChange: 'transform',
                         width: '100%',
                         height: this.innerHeight,
+                        transform: [ { translate3d: this.animation.interpolate({
+                            inputRange: [0, 100000], outputRange: ['0,0px,0','0,100000px,0']
+                        }) } ],
                         ...this.props.style
                     }}
                     className={this.props.className}>
                     {this.props.children}
-                </div>
+                </Animated.div>
             );
         }
     };

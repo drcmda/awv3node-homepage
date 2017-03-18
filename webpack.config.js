@@ -30,7 +30,7 @@ module.exports = env => {
           ]
         : [];
 
-    const PROD_WEBPACK_ALIASES = env.prod ? { react: 'react-lite', 'react-dom': 'react-lite' } : {};
+    const PROD_WEBPACK_ALIASES = /*env.prod ? { react: 'react-lite', 'react-dom': 'react-lite' } :*/ {};
 
     const PROD_WEBPACK_PLUGINS = env.prod
         ? [
@@ -52,10 +52,9 @@ module.exports = env => {
         : [];
 
     return {
-        entry: { app: [...DEV_WEBPACK_ENTRIES, __dirname + '/index.js'] },
+        entry: [...DEV_WEBPACK_ENTRIES, __dirname + '/index.js'],
         output: {
-            filename: 'build/[name].js',
-            chunkFilename: 'build/chunk.[id].js',
+            filename: 'build/bundle.js',
             path: __dirname
         },
         module: {
@@ -95,11 +94,6 @@ module.exports = env => {
                     pngquant: { quality: '65-90', speed: 4 },
                     mozjpeg: { quality: 65 }
                 }
-            }),
-            new webpack.optimize.CommonsChunkPlugin({
-                name: 'vendor',
-                filename: 'build/vendor.js',
-                minChunks: module => /(node_modules)/.test(module.resource)
             }),
             ...DEV_WEBPACK_PLUGINS,
             ...PROD_WEBPACK_PLUGINS
