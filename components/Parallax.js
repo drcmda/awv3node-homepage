@@ -4,57 +4,76 @@ import throttle from 'lodash/throttle';
 
 export default class extends React.Component {
     layers = [];
-    windowInnerHeight = 0;
-    windowPageYOffset = 0;
+    height = 0;
+    offset = 0;
+    busy = false;
 
-    scroller = ({ force = false }) =>
-        this.layers.forEach(layer => layer.move(this.windowInnerHeight, this.windowPageYOffset, force));
+    scroller = () => {
+        this.layers.forEach(layer => layer.move(this.height, this.offset))
+        this.busy = false;
+    }
+    scrollerRaf = () => requestAnimationFrame(this.scroller)
+    scrollerThrottle = throttle(this.scrollerRaf, 100)
 
     onScroll = event => {
-        requestAnimationFrame(this.scroller);
-        this.windowPageYOffset = window.pageYOffset;
+        if (!this.busy) {
+            this.busy = true;
+            this.scrollerRaf();
+            this.offset = event.target.scrollTop;
+        }
     };
 
     onResize = () => {
-        this.windowPageYOffset = window.pageYOffset;
-        this.windowInnerHeight = window.innerHeight;
-        this.layers.forEach(layer => layer.height(this.windowInnerHeight));
-        this.scroller({ force: true });
+        this.offset = this.refs.container.scrollTop;
+        this.height = this.refs.container.clientHeight;
+        this.layers.forEach(layer => layer.height(this.height));
+        this.scroller();
+    };
+
+    componentDidUpdate() {
+        this.layers = Object.keys(this.refs).filter(key => this.refs[key].move).map(key => this.refs[key]);
+        this.onResize();
     }
 
     componentDidMount() {
-        this.layers = Object.keys(this.refs).filter(key => this.refs[key].move).map(key => this.refs[key]);
-        window.addEventListener('scroll', throttle(this.onScroll, 100), { passive: true });
         window.addEventListener('resize', this.onResize, false);
-        this.onResize();
-    }
-
-    componentDidUpdate() {
-        this.onResize();
+        this.componentDidUpdate();
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.onScroll);
         window.removeEventListener('resize', this.onResize, false);
     }
 
     render() {
         this.layers = React.Children.map(this.props.children, (child, index) =>
-            React.cloneElement(child, { ...child.props, ref: `child-${index}` }));
+            React.cloneElement(child, { ...child.props, ref: `child-${index}`, container: this }));
 
         return (
             <div
                 ref="container"
+                onScroll={this.onScroll}
                 style={{
                     position: 'absolute',
                     width: '100%',
+                    height: '100%',
+                    overflowX: 'hidden',
+                    overflowY: 'auto',
                     transform: 'translate3d(0, 0, 0)',
-                    overflow: 'hidden',
-                    height: this.props.height,
                     ...this.props.style
                 }}
                 className={this.props.className}>
-                {this.layers}
+                <div
+                    ref="content"
+                    style={{
+                        position: 'absolute',
+                        width: '100%',
+                        transform: 'translate3d(0, 0, 0)',
+                        overflow: 'hidden',
+                        height: this.props.height,
+                        ...this.props.innerStyle
+                    }}>
+                    {this.layers}
+                </div>
             </div>
         );
     }
@@ -62,9 +81,7 @@ export default class extends React.Component {
     static Layer = class extends React.Component {
         constructor(props) {
             super(props);
-            const innerHeight = window.innerHeight;
-            const pageYOffset = window.pageYOffset;
-            const offset = -(pageYOffset * props.speed) + innerHeight * props.offset;
+            const offset = -(props.container.offset * props.speed) + props.container.height * props.offset;
             this.animation = new Animated.Value(offset);
             this.invisible = false;
         }
@@ -72,14 +89,14 @@ export default class extends React.Component {
         static propTypes = { factor: React.PropTypes.number, offset: React.PropTypes.number };
         static defaultProps = { factor: 1, offset: 0 };
 
-        move(innerHeight, YOffset, force = false) {
-            let offset = -(YOffset * this.props.speed) + innerHeight * this.props.offset;
-            Animated.spring(this.animation, { toValue: parseFloat(offset) }).start();
+        move(height, offset) {
+            let calculatedOffset = -(offset * this.props.speed) + height * this.props.offset;
+            Animated.spring(this.animation, { toValue: parseFloat(calculatedOffset) }).start();
         }
 
-        height(innerHeight) {
-            let height = innerHeight * this.props.factor;
-            this.refs.layer.refs.node.style.height = height.toFixed(2) + 'px';
+        height(height) {
+            let calculatedHeight = height * this.props.factor;
+            this.refs.layer.refs.node.style.height = calculatedHeight.toFixed(2) + 'px';
         }
 
         render() {
@@ -92,10 +109,15 @@ export default class extends React.Component {
                         backgroundRepeat: 'no-repeat',
                         willChange: 'transform',
                         width: '100%',
-                        height: this.innerHeight,
-                        transform: [ { translate3d: this.animation.interpolate({
-                            inputRange: [0, 100000], outputRange: ['0,0px,0','0,100000px,0']
-                        }) } ],
+                        height: this.props.container.height * this.props.factor,
+                        transform: [
+                            {
+                                translate3d: this.animation.interpolate({
+                                    inputRange: [0, 100000],
+                                    outputRange: ['0,0px,0', '0,100000px,0']
+                                })
+                            }
+                        ],
                         ...this.props.style
                     }}
                     className={this.props.className}>

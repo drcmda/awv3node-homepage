@@ -15,7 +15,9 @@ export default class extends React.Component {
 
     render() {
         return (
-            <Parallax height="400%" style={{ background: 'linear-gradient(to bottom, rgba(24,60,96,1) 0%,rgba(255,150,150,1) 100%)' }}>
+            <Parallax
+                height="400%"
+                style={{ background: 'linear-gradient(to bottom, rgba(24,60,96,1) 0%,rgba(255,150,150,1) 100%)' }}>
 
                 <Parallax.Layer
                     offset={0}
@@ -63,16 +65,12 @@ export default class extends React.Component {
                     <img src={A('cloud')} style={{ display: 'block', width: 400, marginLeft: '70%' }} />
                 </Parallax.Layer>
 
-
                 <Parallax.Layer
-                    offset={1}
+                    offset={1.1}
                     speed={-0.3}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src={A('bash')} style={{ width: '40%' }}/>
-
+                    <img src={A('bash')} style={{ width: '40%' }} />
                 </Parallax.Layer>
-
-
 
                 <Parallax.Layer
                     offset={4.1}
@@ -104,7 +102,7 @@ export default class extends React.Component {
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Animated.img
                         src={A('clients-main')}
-                        style={{ cursor: 'pointer', width: '45%', transform: [{ scale: this.animation }] }}
+                        style={{ cursor: 'pointer', width: '40%', transform: [{ scale: this.animation }] }}
                         onMouseOver={this.hover}
                         onMouseOut={this.unhover}
                     />
