@@ -2,28 +2,31 @@ import React from 'react';
 import Animated from 'animated/lib/targets/react-dom';
 
 export default class extends React.Component {
+    state = { ready: false };
+
     layers = [];
     height = 0;
-    offset = 0;
+    scrollTop = 0;
     busy = false;
 
     scroller = () => {
-        this.layers.forEach(layer => layer.move(this.height, this.offset))
+        this.layers.forEach(layer => layer.move(this.height, this.scrollTop, this.props.pages));
         this.busy = false;
-    }
-    scrollerRaf = () => requestAnimationFrame(this.scroller)
+    };
+    scrollerRaf = () => requestAnimationFrame(this.scroller);
 
     onScroll = event => {
         if (!this.busy) {
             this.busy = true;
             this.scrollerRaf();
-            this.offset = event.target.scrollTop;
+            this.scrollTop = event.target.scrollTop;
         }
     };
 
     onResize = () => {
-        this.offset = this.refs.container.scrollTop;
+        this.scrollTop = this.refs.container.scrollTop;
         this.height = this.refs.container.clientHeight;
+        if (this.refs.content) this.refs.content.style.height = `${this.height * this.props.pages}px`;
         this.layers.forEach(layer => layer.height(this.height));
         this.scroller();
     };
@@ -36,6 +39,7 @@ export default class extends React.Component {
     componentDidMount() {
         window.addEventListener('resize', this.onResize, false);
         this.componentDidUpdate();
+        this.setState({ ready: true });
     }
 
     componentWillUnmount() {
@@ -45,7 +49,6 @@ export default class extends React.Component {
     render() {
         this.layers = React.Children.map(this.props.children, (child, index) =>
             React.cloneElement(child, { ...child.props, ref: `child-${index}`, container: this }));
-
         return (
             <div
                 ref="container"
@@ -54,24 +57,28 @@ export default class extends React.Component {
                     position: 'absolute',
                     width: '100%',
                     height: '100%',
+                    overflow: 'scroll',
                     overflowX: 'hidden',
-                    overflowY: 'auto',
+                    WebkitOverflowScrolling: 'touch',
                     transform: 'translate3d(0, 0, 0)',
                     ...this.props.style
                 }}
                 className={this.props.className}>
-                <div
-                    ref="content"
-                    style={{
-                        position: 'absolute',
-                        width: '100%',
-                        transform: 'translate3d(0, 0, 0)',
-                        overflow: 'hidden',
-                        height: this.props.height,
-                        ...this.props.innerStyle
-                    }}>
-                    {this.layers}
-                </div>
+
+                {this.state.ready &&
+                    <div
+                        ref="content"
+                        style={{
+                            position: 'absolute',
+                            width: '100%',
+                            transform: 'translate3d(0, 0, 0)',
+                            overflow: 'hidden',
+                            height: this.height * this.props.pages,
+                            ...this.props.innerStyle
+                        }}>
+                        {this.layers}
+                    </div>}
+
             </div>
         );
     }
@@ -79,18 +86,23 @@ export default class extends React.Component {
     static Layer = class extends React.Component {
         constructor(props) {
             super(props);
-            const offset = -(props.container.offset * props.speed) + props.container.height * props.offset;
+            const offset = -(props.container.scrollTop * props.speed) +
+                props.container.height * (props.offset * props.container.props.pages);
             this.animTranslate = new Animated.Value(offset);
-            const height = props.container.height * props.factor
+            const height = props.container.height * props.factor;
             this.animHeight = new Animated.Value(height);
-            this.invisible = false;
         }
 
-        static propTypes = { factor: React.PropTypes.number, offset: React.PropTypes.number };
-        static defaultProps = { factor: 1, offset: 0 };
+        static propTypes = {
+            factor: React.PropTypes.number,
+            offset: React.PropTypes.number,
+            stretch: React.PropTypes.number
+        };
+        static defaultProps = { factor: 1, offset: 0, stretch: 1 };
 
-        move(height, offset) {
-            let toValue = parseFloat(-(offset * this.props.speed) + height * this.props.offset);
+        move(height, scrollTop, pages) {
+            let offset = this.props.offset * pages;
+            let toValue = parseFloat(-(scrollTop * this.props.speed) + height * offset);
             Animated.spring(this.animTranslate, { toValue }).start();
         }
 
