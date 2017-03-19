@@ -1,6 +1,5 @@
 import React from 'react';
 import Animated from 'animated/lib/targets/react-dom';
-import throttle from 'lodash/throttle';
 
 export default class extends React.Component {
     layers = [];
@@ -13,7 +12,6 @@ export default class extends React.Component {
         this.busy = false;
     }
     scrollerRaf = () => requestAnimationFrame(this.scroller)
-    scrollerThrottle = throttle(this.scrollerRaf, 100)
 
     onScroll = event => {
         if (!this.busy) {
@@ -82,7 +80,9 @@ export default class extends React.Component {
         constructor(props) {
             super(props);
             const offset = -(props.container.offset * props.speed) + props.container.height * props.offset;
-            this.animation = new Animated.Value(offset);
+            this.animTranslate = new Animated.Value(offset);
+            const height = props.container.height * props.factor
+            this.animHeight = new Animated.Value(height);
             this.invisible = false;
         }
 
@@ -90,13 +90,13 @@ export default class extends React.Component {
         static defaultProps = { factor: 1, offset: 0 };
 
         move(height, offset) {
-            let calculatedOffset = -(offset * this.props.speed) + height * this.props.offset;
-            Animated.spring(this.animation, { toValue: parseFloat(calculatedOffset) }).start();
+            let toValue = parseFloat(-(offset * this.props.speed) + height * this.props.offset);
+            Animated.spring(this.animTranslate, { toValue }).start();
         }
 
         height(height) {
-            let calculatedHeight = height * this.props.factor;
-            this.refs.layer.refs.node.style.height = calculatedHeight.toFixed(2) + 'px';
+            let toValue = parseFloat(height * this.props.factor);
+            Animated.spring(this.animHeight, { toValue }).start();
         }
 
         render() {
@@ -109,10 +109,10 @@ export default class extends React.Component {
                         backgroundRepeat: 'no-repeat',
                         willChange: 'transform',
                         width: '100%',
-                        height: this.props.container.height * this.props.factor,
+                        height: this.animHeight,
                         transform: [
                             {
-                                translate3d: this.animation.interpolate({
+                                translate3d: this.animTranslate.interpolate({
                                     inputRange: [0, 100000],
                                     outputRange: ['0,0px,0', '0,100000px,0']
                                 })
