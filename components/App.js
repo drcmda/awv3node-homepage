@@ -63,11 +63,21 @@ export default class extends React.Component {
                     <img src={A('cloud')} style={{ display: 'block', width: 400, marginLeft: '70%' }} />
                 </Parallax.Layer>
 
+
                 <Parallax.Layer
-                    offset={3.6}
-                    factor={2}
+                    offset={1}
+                    speed={-0.3}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <img src={A('bash')} style={{ width: '40%' }}/>
+
+                </Parallax.Layer>
+
+
+
+                <Parallax.Layer
+                    offset={4.1}
                     speed={0.2}
-                    style={{ opacity: 0.2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    style={{ opacity: 0.4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img src={A('ether')} style={{ width: '100%' }} />
                 </Parallax.Layer>
 

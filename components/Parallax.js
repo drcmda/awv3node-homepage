@@ -62,7 +62,10 @@ export default class extends React.Component {
     static Layer = class extends React.Component {
         constructor(props) {
             super(props);
-            this.animation = new Animated.Value(window.innerHeight * props.factor);
+            const innerHeight = window.innerHeight;
+            const pageYOffset = window.pageYOffset;
+            const offset = -(pageYOffset * props.speed) + innerHeight * props.offset;
+            this.animation = new Animated.Value(offset);
             this.invisible = false;
         }
 
