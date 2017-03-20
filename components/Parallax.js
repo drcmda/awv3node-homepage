@@ -86,9 +86,10 @@ export default class extends React.Component {
     static Layer = class extends React.Component {
         constructor(props) {
             super(props);
-            const offset = -(props.container.scrollTop * props.speed) +
-                props.container.height * (props.offset * props.container.props.pages);
-            this.animTranslate = new Animated.Value(offset);
+            const targetScroll = Math.floor(props.offset) * props.container.height;
+            const offset = props.container.height * props.offset + targetScroll * props.speed;
+            const toValue = parseFloat(-(props.container.scrollTop * props.speed) + offset);
+            this.animTranslate = new Animated.Value(toValue);
             const height = props.container.height * props.factor;
             this.animHeight = new Animated.Value(height);
         }
@@ -101,14 +102,14 @@ export default class extends React.Component {
         static defaultProps = { factor: 1, offset: 0, stretch: 1 };
 
         move(height, scrollTop, pages) {
-            let targetScroll = Math.floor(this.props.offset) * height;
-            let offset = height * this.props.offset + targetScroll * this.props.speed;
-            let toValue = parseFloat(-(scrollTop * this.props.speed) + offset);
+            const targetScroll = Math.floor(this.props.offset) * height;
+            const offset = height * this.props.offset + targetScroll * this.props.speed;
+            const toValue = parseFloat(-(scrollTop * this.props.speed) + offset);
             Animated.spring(this.animTranslate, { toValue }).start();
         }
 
         height(height) {
-            let toValue = parseFloat(height * this.props.factor);
+            const toValue = parseFloat(height * this.props.factor);
             Animated.spring(this.animHeight, { toValue }).start();
         }
 
