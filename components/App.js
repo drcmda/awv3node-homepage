@@ -7,7 +7,7 @@ const A = (name, url = false) => `${url ? 'url(' : ''}build/assets/${name}.svg${
 
 //linear-gradient(to bottom, rgba(24,60,96,1) 0%,rgba(255,150,150,1) 100%);
 //<Parallax height="400%" style={{ backgroundSize: 'cover', backgroundImage: A('stars', true) }}>
-
+// #03101d
 export default class extends React.Component {
     animation = new Animated.Value(1);
     hover = () => Animated.spring(this.animation, { toValue: 1.2 }).start();
@@ -15,25 +15,31 @@ export default class extends React.Component {
 
     render() {
         return (
-            <Parallax
-                pages={4}
-                innerStyle={{ background: 'linear-gradient(to bottom, rgba(24,60,96,1) 0%,rgba(255,150,150,1) 100%)' }}>
+            <Parallax pages={4}>
 
                 <Parallax.Layer
                     offset={0}
                     speed={0}
-                    factor={5}
-                    style={{ backgroundSize: 'cover', backgroundImage: A('stars', true) }}
+                    style={{ backgroundColor: '#03101d', backgroundSize: 'cover', backgroundImage: A('stars', true) }}
                 />
+
+                <Parallax.Layer offset={1} speed={0} style={{ backgroundColor: '#53466f' }} />
+
+                <Parallax.Layer offset={2} speed={0} style={{ backgroundColor: '#64d6a7' }} />
 
                 <Parallax.Layer
                     offset={0}
                     speed={0.5}
-                    style={{
-                        backgroundImage: `url(build/assets/logo.png)`, backgroundPosition: 'center',
-                        backgroundSize: '60%'
-                    }}
-                />
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Animated.img
+                        src={A('logo')}
+                        style={{ cursor: 'pointer', width: '300px', transform: [{ scale: this.animation }] }}
+                        onMouseOver={this.hover}
+                        onMouseOut={this.unhover}
+                    />
+                </Parallax.Layer>
+
+                <Parallax.Layer offset={3} speed={0} style={{ backgroundColor: 'rgba(255,150,150,1)' }} />
 
                 <Parallax.Layer offset={1.25} speed={-0.2}>
                     <img src={A('satellite4')} style={{ width: '20%', marginLeft: '60%' }} />
@@ -72,7 +78,12 @@ export default class extends React.Component {
                     offset={1.5}
                     speed={-0.3}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src={A('bash')} style={{ width: '40%' }} />
+                    <Animated.img
+                        src={A('bash')}
+                        style={{ cursor: 'pointer', width: '40%', transform: [{ scale: this.animation }] }}
+                        onMouseOver={this.hover}
+                        onMouseOut={this.unhover}
+                    />
                 </Parallax.Layer>
 
                 <Parallax.Layer
@@ -101,7 +112,7 @@ export default class extends React.Component {
 
                 <Parallax.Layer
                     offset={3}
-                    speed={-0.2}
+                    speed={-0}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Animated.img
                         src={A('clients-main')}
