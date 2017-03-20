@@ -101,8 +101,9 @@ export default class extends React.Component {
         static defaultProps = { factor: 1, offset: 0, stretch: 1 };
 
         move(height, scrollTop, pages) {
-            let offset = this.props.offset * pages;
-            let toValue = parseFloat(-(scrollTop * this.props.speed) + height * offset);
+            let targetScroll = Math.floor(this.props.offset) * height;
+            let offset = height * this.props.offset + targetScroll * this.props.speed;
+            let toValue = parseFloat(-(scrollTop * this.props.speed) + offset);
             Animated.spring(this.animTranslate, { toValue }).start();
         }
 
