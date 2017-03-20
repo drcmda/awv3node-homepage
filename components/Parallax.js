@@ -102,12 +102,10 @@ export default class extends React.Component {
         static defaultProps = { factor: 1, offset: 0, stretch: 1 };
 
         move(height, scrollTop, pages) {
-            //if (Math.abs(this.props.speed) > 0) {
-                const targetScroll = Math.floor(this.props.offset) * height;
-                const offset = height * this.props.offset + targetScroll * this.props.speed;
-                const toValue = parseFloat(-(scrollTop * this.props.speed) + offset);
-                Animated.spring(this.animTranslate, { toValue }).start();
-            //}
+            const targetScroll = Math.floor(this.props.offset) * height;
+            const offset = height * this.props.offset + targetScroll * this.props.speed;
+            const toValue = parseFloat(-(scrollTop * this.props.speed) + offset);
+            Animated.spring(this.animTranslate, { toValue }).start();
         }
 
         height(height) {
