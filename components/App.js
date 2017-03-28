@@ -14,7 +14,7 @@ export default class extends React.Component {
     render() {
         return (
             <Parallax
-                ref="parallax"
+                ref={instance => this.parallax = instance}
                 pages={4}
                 scrolling={false}>
 
@@ -75,7 +75,7 @@ export default class extends React.Component {
                 <Parallax.Layer
                     offset={0} speed={0.5}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    onClick={() => this.refs.parallax.scrollTo(1)}>
+                    onClick={() => this.parallax.scrollTo(1)}>
                     <div
                         style={{
                             whiteSpace: 'pre',
@@ -101,7 +101,7 @@ export default class extends React.Component {
 
                 <Parallax.Layer
                     offset={1} speed={0}
-                    onClick={() => this.refs.parallax.scrollTo(2)}
+                    onClick={() => this.parallax.scrollTo(2)}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img
                         src={url('server')}
@@ -111,7 +111,7 @@ export default class extends React.Component {
 
                 <Parallax.Layer
                     offset={2} speed={0}
-                    onClick={() => this.refs.parallax.scrollTo(3)}
+                    onClick={() => this.parallax.scrollTo(3)}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img
                         src={url('bash')}
@@ -122,7 +122,7 @@ export default class extends React.Component {
                 <Parallax.Layer
                     offset={3} speed={-0}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    onClick={() => this.refs.parallax.scrollTo(0)}>
+                    onClick={() => this.parallax.scrollTo(0)}>
                     <img
                         src={url('clients-main')}
                         style={{ width: '40%', transform: [{ scale: this.animation }] }}
