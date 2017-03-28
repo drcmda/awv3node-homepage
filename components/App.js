@@ -14,7 +14,7 @@ export default class extends React.Component {
     render() {
         return (
             <Parallax
-                ref={instance => this.parallax = instance}
+                ref={ref => this.parallax = ref}
                 pages={4}
                 scrolling={false}>
 
